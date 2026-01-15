@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -62,36 +62,13 @@
             border-top: 1px solid #f3f4f6;
             transition: all 0.3s ease;
         }
-        .process-step:hover {
-            background-color: #fafafa;
-            padding-left: 1rem;
-        }
-        /* Mobile Specific UI Optimization */
-        @media (max-width: 640px) {
-            .hero-title {
-                font-size: 4.5rem !important;
-                line-height: 0.9;
-            }
-            .tap-target {
-                min-height: 48px;
-                display: flex;
-                align-items: center;
-            }
-        }
-        /* Modal Styles */
+        /* Modal Transitions */
         #projectModal {
             display: none;
             z-index: 100;
         }
         #projectModal.active {
             display: flex;
-        }
-        .modal-content {
-            transform: translateY(20px);
-            transition: transform 0.4s ease;
-        }
-        #projectModal.active .modal-content {
-            transform: translateY(0);
         }
     </style>
 </head>
@@ -100,53 +77,24 @@
     <!-- Background Grid -->
     <div class="fixed inset-0 pointer-events-none opacity-[0.03] grid-bg z-0"></div>
 
-    <!-- Scroll Indicator (Hidden on very small screens for cleaner UI) -->
-    <div class="fixed left-4 md:left-6 bottom-10 h-24 md:h-32 w-px bg-gray-200 z-50 hidden sm:block overflow-hidden">
-        <div class="w-full bg-red-600 animate-slide-y" style="height: 30%;"></div>
-    </div>
-
     <!-- Project Modal -->
-    <div id="projectModal" class="fixed inset-0 bg-white/95 backdrop-blur-sm items-center justify-center p-4 md:p-6">
-        <div class="max-w-6xl w-full bg-white border border-black modal-content relative max-h-[90vh] overflow-y-auto shadow-2xl">
-            <button onclick="closeProject()" class="absolute top-4 right-4 md:top-6 md:right-6 z-20 hover:text-red-600 transition-colors p-2 tap-target">
-                <i data-lucide="x" class="w-8 h-8"></i>
+    <div id="projectModal" class="fixed inset-0 bg-white/95 backdrop-blur-sm items-center justify-center p-4 z-[100]">
+        <div class="max-w-5xl w-full bg-white border border-black relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button onclick="closeProject()" class="absolute top-4 right-4 z-20 hover:text-red-600 p-2">
+                <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2">
-                <div class="aspect-video lg:aspect-auto bg-gray-100 border-b lg:border-b-0 lg:border-r border-black overflow-hidden">
-                    <img id="modalImg" src="" class="w-full h-full object-cover grayscale" alt="Project Image">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <div class="aspect-video md:aspect-auto bg-gray-100 border-b md:border-b-0 md:border-r border-black overflow-hidden">
+                    <img id="modalImg" src="" class="w-full h-full object-cover grayscale" alt="Work">
                 </div>
-                <div class="p-6 md:p-16 space-y-8 md:space-y-12">
+                <div class="p-6 md:p-12 space-y-6">
                     <div>
-                        <span id="modalCategory" class="text-[10px] md:text-xs header-font text-red-600 tracking-[0.4em] mb-2 md:mb-4 block uppercase italic">Category // Protocol</span>
-                        <h2 id="modalTitle" class="text-3xl md:text-7xl header-font italic uppercase leading-none mb-4 md:mb-6">Project Title</h2>
-                        <div class="flex items-center gap-4">
-                            <div class="w-8 md:w-12 h-px bg-black"></div>
-                            <span id="modalYear" class="text-[9px] md:text-[10px] header-font tracking-widest uppercase italic">Deployment_2024</span>
-                        </div>
+                        <span id="modalCategory" class="text-[10px] header-font text-red-600 tracking-widest uppercase italic block mb-2">Category</span>
+                        <h2 id="modalTitle" class="text-3xl md:text-5xl header-font italic uppercase leading-none">Title</h2>
                     </div>
-
-                    <div class="space-y-4 md:space-y-6">
-                        <h4 class="text-[10px] md:text-xs header-font tracking-widest uppercase italic border-b border-gray-100 pb-2">Analysis Breakdown</h4>
-                        <p id="modalDesc" class="text-gray-500 font-medium leading-relaxed italic uppercase text-xs md:text-sm tracking-wide">
-                            Full system analysis of the project's logic and design execution. 
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 md:gap-8">
-                        <div>
-                            <h4 class="text-[9px] md:text-[10px] header-font text-red-600 tracking-widest uppercase mb-2 md:mb-4">Core Stack</h4>
-                            <ul id="modalStack" class="space-y-1 md:space-y-2 text-[9px] md:text-[10px] font-bold uppercase italic text-gray-400"></ul>
-                        </div>
-                        <div>
-                            <h4 class="text-[9px] md:text-[10px] header-font text-red-600 tracking-widest uppercase mb-2 md:mb-4">Status</h4>
-                            <span class="text-[9px] md:text-[10px] font-bold uppercase italic bg-black text-white px-2 py-1">OPERATIONAL</span>
-                        </div>
-                    </div>
-
-                    <button class="w-full py-4 md:py-5 bg-black text-white text-xs header-font tracking-widest md:tracking-[0.3em] hover:bg-red-600 transition-all italic flex items-center justify-center gap-3 tap-target">
-                        LAUNCH PROTOCOL <i data-lucide="external-link" class="w-4 h-4"></i>
-                    </button>
+                    <p id="modalDesc" class="text-gray-500 font-medium leading-relaxed italic uppercase text-xs">System analysis loading...</p>
+                    <div id="modalStack" class="flex flex-wrap gap-2"></div>
+                    <button class="w-full py-4 bg-black text-white text-[10px] header-font tracking-widest hover:bg-red-600 transition-all italic uppercase">Launch Protocol</button>
                 </div>
             </div>
         </div>
@@ -155,80 +103,64 @@
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
-            <div class="cursor-pointer flex items-center gap-2 group py-2" onclick="showPage('home')">
-                <div class="w-8 h-8 md:w-10 md:h-10 bg-red-600 flex items-center justify-center text-white font-black text-xs md:text-sm tracking-tighter italic">
-                    SM
-                </div>
-                <span class="text-lg md:text-xl header-font tracking-widest group-hover:text-red-600 transition-colors uppercase italic">
-                    SYSMOKIN <span class="text-gray-300 font-light chinese-font hidden sm:inline">西斯莫金</span>
-                </span>
+            <div class="cursor-pointer flex items-center gap-2" onclick="showPage('home')">
+                <div class="w-8 h-8 bg-red-600 flex items-center justify-center text-white font-black text-xs italic">SM</div>
+                <span class="text-base md:text-xl header-font tracking-widest uppercase italic">SYSMOKIN</span>
             </div>
 
             <!-- Desktop Nav -->
-            <div class="hidden lg:flex gap-8 items-center">
-                <button onclick="showPage('home')" class="nav-link text-[10px] header-font tracking-widest hover:text-red-600 transition-colors uppercase italic p-2">HOME</button>
-                <button onclick="showPage('about')" class="nav-link text-[10px] header-font tracking-widest hover:text-red-600 transition-colors uppercase italic p-2">ABOUT</button>
-                <button onclick="showPage('works')" class="nav-link text-[10px] header-font tracking-widest hover:text-red-600 transition-colors uppercase italic p-2">WORKS</button>
-                <button onclick="showPage('templates')" class="nav-link text-[10px] header-font tracking-widest hover:text-red-600 transition-colors uppercase italic p-2">TEMPLATES</button>
-                <button onclick="showPage('clients')" class="nav-link text-[10px] header-font tracking-widest hover:text-red-600 transition-colors uppercase italic p-2">CLIENTS</button>
-                <button onclick="showPage('contact')" class="bg-black text-white px-5 py-2.5 text-[10px] header-font tracking-widest hover:bg-red-600 transition-all border border-black hover:border-red-600 uppercase italic">CONTACT</button>
+            <div class="hidden lg:flex gap-6 items-center">
+                <button onclick="showPage('home')" class="text-[10px] header-font tracking-widest hover:text-red-600 uppercase italic">HOME</button>
+                <button onclick="showPage('about')" class="text-[10px] header-font tracking-widest hover:text-red-600 uppercase italic">ABOUT</button>
+                <button onclick="showPage('works')" class="text-[10px] header-font tracking-widest hover:text-red-600 uppercase italic">WORKS</button>
+                <button onclick="showPage('templates')" class="text-[10px] header-font tracking-widest hover:text-red-600 uppercase italic">TEMPLATES</button>
+                <button onclick="showPage('contact')" class="bg-black text-white px-4 py-2 text-[10px] header-font tracking-widest hover:bg-red-600 uppercase italic">CONTACT</button>
             </div>
 
-            <!-- Mobile Toggle -->
-            <button class="lg:hidden p-3 tap-target" id="menuToggle" aria-label="Toggle Menu">
-                <i data-lucide="menu"></i>
+            <!-- Smaller Burger Icon for Mobile -->
+            <button class="lg:hidden p-1.5 border border-gray-100 rounded" id="menuToggle">
+                <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobileMenu" class="hidden fixed top-16 left-0 w-full h-[calc(100vh-64px)] bg-white border-b border-gray-200 p-6 flex flex-col gap-4 lg:hidden shadow-xl z-50 overflow-y-auto">
-            <button onclick="showPage('home')" class="text-left text-3xl header-font tracking-widest italic uppercase border-b border-gray-50 py-4 tap-target">HOME</button>
-            <button onclick="showPage('about')" class="text-left text-3xl header-font tracking-widest italic uppercase border-b border-gray-50 py-4 tap-target">ABOUT</button>
-            <button onclick="showPage('works')" class="text-left text-3xl header-font tracking-widest italic uppercase border-b border-gray-50 py-4 tap-target">WORKS</button>
-            <button onclick="showPage('templates')" class="text-left text-3xl header-font tracking-widest italic uppercase border-b border-gray-50 py-4 tap-target">TEMPLATES</button>
-            <button onclick="showPage('clients')" class="text-left text-3xl header-font tracking-widest italic uppercase border-b border-gray-50 py-4 tap-target">CLIENTS</button>
-            <button onclick="showPage('contact')" class="text-left text-3xl header-font tracking-widest text-red-600 italic uppercase py-4 tap-target">CONTACT</button>
+        <!-- Compact Mobile Menu -->
+        <div id="mobileMenu" class="hidden fixed top-16 left-0 w-full h-[calc(100vh-64px)] bg-white p-6 flex flex-col gap-4 lg:hidden z-50 shadow-2xl">
+            <button onclick="showPage('home')" class="text-left text-2xl header-font italic uppercase border-b border-gray-50 pb-3">HOME</button>
+            <button onclick="showPage('about')" class="text-left text-2xl header-font italic uppercase border-b border-gray-50 pb-3">ABOUT</button>
+            <button onclick="showPage('works')" class="text-left text-2xl header-font italic uppercase border-b border-gray-50 pb-3">WORKS</button>
+            <button onclick="showPage('templates')" class="text-left text-2xl header-font italic uppercase border-b border-gray-50 pb-3">TEMPLATES</button>
+            <button onclick="showPage('contact')" class="text-left text-2xl header-font italic uppercase text-red-600">CONTACT</button>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="relative z-10">
 
         <!-- HOME PAGE -->
         <section id="home" class="page-section active">
-            <!-- Hero Section Mobile Optimized -->
-            <div class="relative min-h-[100vh] flex items-center justify-center px-6 pt-16 sm:pt-0 overflow-hidden">
-                <!-- Background Decorative Text -->
-                <div class="absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-[0.02] pointer-events-none select-none z-0 text-center">
-                    <div class="text-[30vw] font-black leading-none chinese-font italic">系统</div>
+            <!-- Fixed Hero for Mobile -->
+            <div class="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+                <div class="absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-[0.03] pointer-events-none select-none text-center">
+                    <div class="text-[35vw] font-black chinese-font">系统</div>
                 </div>
                 
-                <div class="max-w-7xl mx-auto w-full z-10 flex flex-col items-center md:items-start space-y-8 md:space-y-10">
-                    <div class="space-y-4 text-center md:text-left">
-                        <div class="inline-block px-3 py-1 bg-red-600 text-white text-[9px] md:text-[10px] header-font tracking-[0.3em] uppercase italic">
-                            MULTIMEDIA DESIGNER // FULL STACK SPECIALIST
-                        </div>
-                        <div>
-                            <span class="text-[11px] md:text-sm header-font tracking-[0.3em] md:tracking-[0.5em] text-gray-400 uppercase italic">Identity_Sequence // 西斯莫金</span>
-                        </div>
+                <div class="max-w-7xl mx-auto w-full z-10 flex flex-col items-center md:items-start text-center md:text-left">
+                    <div class="bg-red-600 text-white px-3 py-1 text-[8px] md:text-[10px] header-font tracking-widest uppercase italic mb-6">
+                        MULTIMEDIA DESIGNER // FULL STACK SPECIALIST
                     </div>
-
-                    <h1 class="hero-title text-6xl sm:text-8xl md:text-[11rem] header-font tracking-tighter leading-[0.85] text-center md:text-left uppercase italic">
-                        SYS<span class="text-red-600 md:ml-4">MOKIN</span>
+                    
+                    <h1 class="text-5xl sm:text-7xl md:text-[10rem] header-font tracking-tighter leading-[0.9] mb-8 uppercase italic">
+                        SYS<br class="md:hidden"><span class="text-red-600 md:ml-4">MOKIN</span>
                     </h1>
 
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-12 md:gap-16 w-full max-w-4xl">
-                        <div class="max-w-md text-center md:text-left">
-                            <p class="text-lg md:text-2xl font-bold tracking-tight text-black leading-snug uppercase">
-                                Designing systems that look <span class="text-red-600 italic underline decoration-2 underline-offset-4 header-font uppercase">sharp</span> and work <span class="bg-black text-white px-2 header-font uppercase italic">flawlessly</span>.
-                            </p>
-                        </div>
-                        
-                        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                            <button onclick="showPage('works')" class="bg-black text-white px-10 py-5 text-xs header-font tracking-[0.3em] hover:bg-red-600 transition-all border border-black hover:border-red-600 uppercase italic flex items-center justify-center gap-4 tap-target">
+                    <div class="max-w-md">
+                        <p class="text-sm md:text-xl font-bold tracking-tight text-black leading-snug uppercase mb-10">
+                            Designing systems that look <span class="text-red-600 italic underline underline-offset-4 header-font">sharp</span> and work <span class="bg-black text-white px-2 header-font">flawlessly</span>.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="showPage('works')" class="bg-black text-white px-6 py-4 text-[10px] header-font tracking-widest hover:bg-red-600 transition-all uppercase italic flex items-center justify-center gap-3">
                                 VIEW WORK <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="showPage('contact')" class="bg-white text-black px-10 py-5 text-xs header-font tracking-[0.3em] border-2 border-black hover:bg-black hover:text-white transition-all uppercase italic flex items-center justify-center gap-4 tap-target">
+                            <button onclick="showPage('contact')" class="bg-white text-black px-6 py-4 text-[10px] header-font tracking-widest border-2 border-black hover:bg-black hover:text-white transition-all uppercase italic flex items-center justify-center gap-3">
                                 CONTACT <i data-lucide="send" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -236,80 +168,67 @@
                 </div>
             </div>
 
-            <!-- Recent Works Section -->
-            <div class="py-24 md:py-32 px-6 border-t border-gray-100 bg-gray-50/30">
+            <!-- Recent Works -->
+            <div class="py-20 px-4 md:px-6 border-t border-gray-100 bg-gray-50/30">
                 <div class="max-w-7xl mx-auto">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-8">
-                        <div>
-                            <span class="text-[10px] md:text-xs header-font tracking-[0.3em] text-red-600 block mb-2 uppercase italic">Curation_01</span>
-                            <h2 class="text-4xl md:text-6xl header-font italic uppercase">Recent Works.</h2>
-                        </div>
-                        <button onclick="showPage('works')" class="flex items-center gap-2 text-xs header-font border-b border-black pb-2 hover:text-red-600 hover:border-red-600 transition-all uppercase italic tap-target">
-                            SEE ALL WORKS <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                        </button>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                        <h2 class="text-4xl md:text-6xl header-font italic uppercase">Recent Works.</h2>
+                        <button onclick="showPage('works')" class="text-[10px] header-font border-b border-black pb-1 hover:text-red-600">SEE ALL</button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="group cursor-pointer" onclick="openProject('p1')">
-                            <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-md">
-                                <img src="https://images.unsplash.com/photo-1550745679-33dbe58787a2?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Work 1">
+                            <div class="aspect-video bg-gray-100 border border-gray-200 overflow-hidden relative mb-4">
+                                <img src="https://images.unsplash.com/photo-1550745679-33dbe58787a2?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                             </div>
-                            <h3 class="text-xl header-font group-hover:text-red-600 transition-colors italic uppercase tracking-wider">NEO-SEOUL IDENTITY</h3>
-                            <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_01 / DESIGN</p>
+                            <h3 class="text-lg header-font italic uppercase">NEO-SEOUL IDENTITY</h3>
+                            <p class="text-[9px] text-gray-400 header-font uppercase italic">Archive_01 // DESIGN</p>
                         </div>
                         <div class="group cursor-pointer" onclick="openProject('p2')">
-                            <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-md">
-                                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Work 2">
+                            <div class="aspect-video bg-gray-100 border border-gray-200 overflow-hidden relative mb-4">
+                                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                             </div>
-                            <h3 class="text-xl header-font group-hover:text-red-600 transition-colors italic uppercase tracking-wider">ZENITH DASHBOARD</h3>
-                            <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_02 / LOGIC</p>
+                            <h3 class="text-lg header-font italic uppercase">ZENITH DASHBOARD</h3>
+                            <p class="text-[9px] text-gray-400 header-font uppercase italic">Archive_02 // LOGIC</p>
                         </div>
                         <div class="group cursor-pointer" onclick="openProject('p3')">
-                            <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-md">
-                                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Work 3">
+                            <div class="aspect-video bg-gray-100 border border-gray-200 overflow-hidden relative mb-4">
+                                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                             </div>
-                            <h3 class="text-xl header-font group-hover:text-red-600 transition-colors italic uppercase tracking-wider">KAIZEN AUDIO</h3>
-                            <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_03 / AUDIO</p>
+                            <h3 class="text-lg header-font italic uppercase">KAIZEN AUDIO</h3>
+                            <p class="text-[9px] text-gray-400 header-font uppercase italic">Archive_03 // AUDIO</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Templates Preview -->
-            <div class="py-24 md:py-32 px-6 border-t border-gray-100">
+            <!-- Templates Section (Restored Cards) -->
+            <div class="py-20 px-4 md:px-6 border-t border-gray-100">
                 <div class="max-w-7xl mx-auto">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-8">
-                        <div>
-                            <span class="text-[10px] md:text-xs header-font tracking-[0.3em] text-red-600 block mb-2 uppercase italic">Shop_Protocol</span>
-                            <h2 class="text-4xl md:text-6xl header-font italic uppercase">Templates for Sell.</h2>
-                        </div>
-                        <button onclick="showPage('templates')" class="flex items-center gap-2 text-xs header-font border-b border-black pb-2 hover:text-red-600 hover:border-red-600 transition-all uppercase italic tap-target">
-                            View All <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                        </button>
-                    </div>
+                    <h2 class="text-4xl md:text-6xl header-font italic uppercase mb-12">Templates for Sell.</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 border border-gray-100">
-                        <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-gray-100 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
-                            <div class="flex justify-between items-start mb-16">
-                                <span class="text-[10px] header-font border border-black px-2 py-1 uppercase italic">Framer</span>
-                                <span class="text-2xl header-font italic uppercase">$49.00</span>
+                        <div class="p-8 border-b md:border-b-0 md:border-r border-gray-100 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
+                            <div class="flex justify-between items-start mb-10">
+                                <span class="text-[9px] header-font border border-black px-2 py-1 uppercase italic">Framer</span>
+                                <span class="text-xl header-font italic">$49.00</span>
                             </div>
-                            <h3 class="text-2xl header-font italic mb-4 uppercase tracking-tight">Cyber_Minimal_v1</h3>
-                            <p class="text-xs md:text-sm text-gray-500 font-medium uppercase leading-relaxed tracking-wide italic">High-performance technical UI kit designed for portfolio nodes.</p>
+                            <h3 class="text-2xl header-font italic mb-3 uppercase">Cyber_Minimal_v1</h3>
+                            <p class="text-[10px] text-gray-500 font-medium uppercase italic tracking-wide">High-performance technical UI kit node.</p>
                         </div>
-                        <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-gray-100 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
-                            <div class="flex justify-between items-start mb-16">
-                                <span class="text-[10px] header-font border border-black px-2 py-1 uppercase italic">React</span>
-                                <span class="text-2xl header-font italic uppercase">$79.00</span>
+                        <div class="p-8 border-b md:border-b-0 md:border-r border-gray-100 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
+                            <div class="flex justify-between items-start mb-10">
+                                <span class="text-[9px] header-font border border-black px-2 py-1 uppercase italic">React</span>
+                                <span class="text-xl header-font italic">$79.00</span>
                             </div>
-                            <h3 class="text-2xl header-font italic mb-4 uppercase tracking-tight">Logic_Dashboard</h3>
-                            <p class="text-xs md:text-sm text-gray-500 font-medium uppercase leading-relaxed tracking-wide italic">Full-stack ready administrative logic UI with responsive grid architecture.</p>
+                            <h3 class="text-2xl header-font italic mb-3 uppercase">Logic_Dashboard</h3>
+                            <p class="text-[10px] text-gray-500 font-medium uppercase italic tracking-wide">Ready-to-deploy administrative logic UI.</p>
                         </div>
-                        <div class="p-8 md:p-10 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
-                            <div class="flex justify-between items-start mb-16">
-                                <span class="text-[10px] header-font border border-black px-2 py-1 uppercase italic">Shopify</span>
-                                <span class="text-2xl header-font italic uppercase">$59.00</span>
+                        <div class="p-8 group hover:bg-gray-50 transition-all cursor-pointer" onclick="showPage('templates')">
+                            <div class="flex justify-between items-start mb-10">
+                                <span class="text-[9px] header-font border border-black px-2 py-1 uppercase italic">Shopify</span>
+                                <span class="text-xl header-font italic">$59.00</span>
                             </div>
-                            <h3 class="text-2xl header-font italic mb-4 uppercase tracking-tight">Zen_Commerce</h3>
-                            <p class="text-xs md:text-sm text-gray-500 font-medium uppercase leading-relaxed tracking-wide italic">Eastern-inspired minimalist theme focusing on white space and mobile cycle.</p>
+                            <h3 class="text-2xl header-font italic mb-3 uppercase">Zen_Commerce</h3>
+                            <p class="text-[10px] text-gray-500 font-medium uppercase italic tracking-wide">Minimalist commerce protocol node.</p>
                         </div>
                     </div>
                 </div>
@@ -317,80 +236,43 @@
         </section>
 
         <!-- ABOUT PAGE -->
-        <section id="about" class="page-section pt-24 md:pt-32 pb-24 md:pb-32 px-6">
-            <div class="max-w-7xl mx-auto">
-                <!-- Section 01: Philosophy -->
-                <div class="mb-32 md:mb-48">
-                    <div class="flex items-center gap-6 mb-20">
-                        <div class="h-px bg-red-600 flex-1"></div>
-                        <span class="text-[10px] md:text-xs header-font tracking-[0.5em] text-red-600 uppercase italic">01 // PHILOSOPHY PROTOCOL</span>
-                        <div class="h-px bg-red-600 w-16 md:w-24"></div>
+        <section id="about" class="page-section pt-24 pb-24 px-4 md:px-6">
+            <div class="max-w-7xl mx-auto space-y-32">
+                <!-- Philosophy -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                    <div class="lg:col-span-1">
+                        <span class="text-[10px] header-font text-red-600 tracking-[0.5em] mb-4 block italic uppercase">01 // PHILOSOPHY</span>
+                        <p class="text-2xl md:text-3xl font-black italic uppercase leading-tight border-l-4 border-black pl-6">
+                            Logic is the foundation. Synthesis is the result. Minimalism is the delivery.
+                        </p>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24 items-start">
-                        <div class="space-y-12">
-                            <p class="text-2xl md:text-4xl font-black italic uppercase leading-tight border-l-4 border-black pl-8 tracking-tighter">
-                                Logic is the foundation. Synthesis is the result. Minimalism is the delivery.
-                            </p>
-                        </div>
-                        <div class="relative aspect-[4/5] bg-gray-50 border border-gray-100 overflow-hidden group shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale opacity-80 transition-all duration-700" alt="Identity">
-                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none italic opacity-30"><span class="text-8xl md:text-[12rem] font-black text-white chinese-font">西斯</span></div>
-                        </div>
-                        <div class="space-y-8 md:space-y-12 flex flex-col justify-center h-full">
-                            <h4 class="text-[10px] header-font tracking-widest text-red-600 uppercase italic">Specialist Protocol</h4>
-                            <p class="text-gray-500 font-medium leading-relaxed italic uppercase text-xs md:text-sm tracking-wider">
-                                西斯莫金 (SYSMOKIN) operates at the intersection of high-velocity logic and minimalist aesthetics. I approach design as a holistic system rather than isolated visuals.
-                            </p>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-px bg-black"></div>
-                                <span class="text-[10px] header-font tracking-widest uppercase italic">Logic_Synthesis_v4</span>
-                            </div>
-                        </div>
+                    <div class="aspect-[4/5] bg-gray-50 border overflow-hidden relative shadow-xl">
+                        <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale opacity-80">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-20"><span class="text-9xl font-black chinese-font">西斯</span></div>
                     </div>
+                    <p class="text-gray-500 font-medium uppercase italic text-xs tracking-wider leading-relaxed">
+                        西斯莫金 (SYSMOKIN) operates at the intersection of high-velocity logic and minimalist aesthetics. I approach design as a holistic system.
+                    </p>
                 </div>
 
-                <!-- Section 02: Process Breakdown -->
-                <div class="mb-32 md:mb-48 py-24 border-t border-b border-gray-100">
-                    <span class="text-[10px] md:text-xs header-font tracking-[0.4em] text-red-600 block mb-16 uppercase italic">02 // PROCESS BREAKDOWN</span>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
-                        <div class="process-step pt-12">
-                            <span class="text-5xl header-font text-gray-200 block mb-8 italic uppercase">01.</span>
-                            <h3 class="text-2xl header-font mb-6 italic uppercase tracking-tighter">Protocol Analysis</h3>
-                            <p class="text-gray-500 text-sm font-medium leading-relaxed italic uppercase tracking-wide">Discovery phase defining core logic and system requirements. Identifying constraints before building solutions.</p>
-                        </div>
-                        <div class="process-step pt-12">
-                            <span class="text-5xl header-font text-gray-200 block mb-8 italic uppercase">02.</span>
-                            <h3 class="text-2xl header-font mb-6 italic uppercase tracking-tighter">Structural Synthesis</h3>
-                            <p class="text-gray-500 text-sm font-medium leading-relaxed italic uppercase tracking-wide">Build phase. High-velocity development meets pixel-perfect multimedia design.</p>
-                        </div>
-                        <div class="process-step pt-12">
-                            <span class="text-5xl header-font text-gray-200 block mb-8 italic uppercase">03.</span>
-                            <h3 class="text-2xl header-font mb-6 italic uppercase tracking-tighter">Global Deployment</h3>
-                            <p class="text-gray-500 text-sm font-medium leading-relaxed italic uppercase tracking-wide">Performance optimization and zero-trust security deployment across nodes.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 03: Tech Stack -->
-                <div>
-                    <h2 class="text-5xl md:text-8xl header-font tracking-tighter italic uppercase leading-none mb-16 md:mb-24">Capabilities Matrix.</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-                        <div class="p-10 border border-gray-100 hover:border-red-600 transition-all group bg-white shadow-sm">
-                            <div class="w-12 h-12 bg-black flex items-center justify-center text-white mb-10 group-hover:bg-red-600 transition-colors"><i data-lucide="palette"></i></div>
-                            <h4 class="text-lg header-font mb-8 italic uppercase tracking-widest">Design</h4>
-                            <ul class="space-y-4 text-[11px] header-font text-gray-500 uppercase italic">
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>Adobe PS / AI</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>After Effects</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>InDesign / Canva</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
+                <!-- Tech Matrix -->
+                <div class="border-t border-gray-100 pt-20">
+                    <h2 class="text-4xl md:text-7xl header-font italic uppercase mb-16">Capabilities Matrix.</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="p-6 border border-gray-50 bg-white shadow-sm">
+                            <h4 class="text-[10px] header-font text-red-600 mb-4 italic uppercase">Design</h4>
+                            <ul class="text-[9px] font-bold text-gray-400 space-y-2 uppercase italic">
+                                <li>Adobe PS / AI</li>
+                                <li>After Effects</li>
+                                <li>InDesign</li>
                             </ul>
                         </div>
-                        <div class="p-10 border border-gray-100 hover:border-red-600 transition-all group bg-white shadow-sm">
-                            <div class="w-12 h-12 bg-black flex items-center justify-center text-white mb-10 group-hover:bg-red-600 transition-colors"><i data-lucide="code"></i></div>
-                            <h4 class="text-lg header-font mb-8 italic uppercase tracking-widest">Logic</h4>
-                            <ul class="space-y-4 text-[11px] header-font text-gray-500 uppercase italic">
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>React / Next.js</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>Node.js / SQL</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
-                                <li class="flex justify-between border-b border-gray-50 pb-2"><span>TS / Fullstack</span> <i data-lucide="check" class="w-4 h-4 text-red-600"></i></li>
+                        <div class="p-6 border border-gray-50 bg-white shadow-sm">
+                            <h4 class="text-[10px] header-font text-red-600 mb-4 italic uppercase">Logic</h4>
+                            <ul class="text-[9px] font-bold text-gray-400 space-y-2 uppercase italic">
+                                <li>React / Next.js</li>
+                                <li>Node.js / SQL</li>
+                                <li>Fullstack</li>
                             </ul>
                         </div>
                     </div>
@@ -399,111 +281,78 @@
         </section>
 
         <!-- WORKS PAGE -->
-        <section id="works" class="page-section pt-24 md:pt-32 pb-24 md:pb-32 px-6">
+        <section id="works" class="page-section pt-24 pb-24 px-4 md:px-6">
             <div class="max-w-7xl mx-auto">
-                <div class="mb-16 md:mb-20">
-                    <span class="text-[10px] md:text-xs header-font tracking-[0.3em] text-red-600 block mb-4 uppercase italic">Archive Protocol</span>
-                    <h1 class="text-5xl md:text-8xl header-font tracking-tighter mb-6 italic uppercase">Works // 项目</h1>
-                    <div class="h-1 w-20 bg-black"></div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
+                <h1 class="text-5xl md:text-8xl header-font tracking-tighter mb-12 italic uppercase">Works // 项目</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <div class="group cursor-pointer" onclick="openProject('p1')">
-                        <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-lg">
-                            <img src="https://images.unsplash.com/photo-1550745679-33dbe58787a2?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work 1">
+                        <div class="aspect-video bg-gray-100 border border-gray-200 mb-4 overflow-hidden relative shadow-lg">
+                            <img src="https://images.unsplash.com/photo-1550745679-33dbe58787a2?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                         </div>
-                        <h3 class="text-xl header-font italic uppercase tracking-wider">NEO-SEOUL IDENTITY</h3>
-                        <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_01 / DESIGN</p>
+                        <h3 class="text-xl header-font italic uppercase">NEO-SEOUL IDENTITY</h3>
+                        <p class="text-[10px] header-font text-gray-400 mt-1 italic uppercase">Archive_01 / DESIGN</p>
                     </div>
-                    <div class="group cursor-pointer" onclick="openProject('p2')">
-                        <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-lg">
-                            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work 2">
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPLATES PAGE -->
+        <section id="templates" class="page-section pt-24 pb-24 px-4 md:px-6">
+            <div class="max-w-7xl mx-auto text-center md:text-left">
+                <h1 class="text-5xl md:text-8xl header-font tracking-tighter mb-12 italic uppercase">Templates // 模板</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="border border-black p-8 flex flex-col justify-between min-h-[350px] bg-white">
+                        <div>
+                            <div class="flex justify-between items-center mb-10">
+                                <span class="text-[10px] header-font border border-black px-2 py-1 uppercase italic">Framer</span>
+                                <span class="text-2xl header-font italic">$49.00</span>
+                            </div>
+                            <h3 class="text-3xl header-font italic mb-4 uppercase">Cyber_Minimal_v1</h3>
+                            <p class="text-xs text-gray-500 font-medium uppercase italic tracking-widest leading-relaxed">Full technical UI kit protocol.</p>
                         </div>
-                        <h3 class="text-xl header-font italic uppercase tracking-wider">ZENITH DASHBOARD</h3>
-                        <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_02 / LOGIC</p>
-                    </div>
-                    <div class="group cursor-pointer" onclick="openProject('p3')">
-                        <div class="aspect-video bg-gray-100 border border-gray-200 mb-6 overflow-hidden relative shadow-lg">
-                            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work 3">
-                        </div>
-                        <h3 class="text-xl header-font italic uppercase tracking-wider">KAIZEN AUDIO</h3>
-                        <p class="text-[10px] header-font text-gray-400 mt-1 uppercase italic tracking-widest">Archive_03 / AUDIO</p>
+                        <button class="w-full py-4 bg-black text-white text-[10px] header-font tracking-widest hover:bg-red-600 transition-all italic uppercase">Acquire_Node</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CLIENTS PAGE -->
-        <section id="clients" class="page-section pt-24 md:pt-32 pb-24 md:pb-32 px-6">
+        <section id="clients" class="page-section pt-24 pb-24 px-4 md:px-6">
             <div class="max-w-7xl mx-auto">
-                <div class="mb-24 text-center">
-                    <span class="text-[10px] md:text-xs header-font tracking-[0.3em] text-red-600 block mb-4 uppercase italic">Network & Partners</span>
+                <div class="mb-16 text-center">
                     <h1 class="text-5xl md:text-8xl header-font tracking-tighter mb-6 italic uppercase">Clients // 客户</h1>
-                    <p class="text-gray-500 max-w-xl mx-auto font-medium uppercase text-xs md:text-sm italic tracking-widest leading-relaxed">Collaborating with forward-thinking entities across the globe to build digital infrastructure.</p>
+                    <p class="text-gray-500 max-w-xl mx-auto font-medium uppercase text-xs italic tracking-widest">Collaborating with global nodes.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-10 border border-gray-100 hover:border-black transition-all group flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <span class="text-2xl header-font text-gray-100 group-hover:text-red-600 transition-colors italic font-black">01</span>
-                            <div>
-                                <h3 class="text-xl md:text-2xl header-font italic uppercase tracking-wider">Global Tech Inc</h3>
-                                <p class="text-[10px] header-font text-gray-400 uppercase italic">Infrastructure // Logic</p>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-8 border border-gray-100 flex justify-between items-center bg-white shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <span class="text-2xl header-font text-gray-100 italic font-black">01</span>
+                            <h3 class="text-xl header-font italic uppercase tracking-wider">Global Tech Inc</h3>
                         </div>
-                        <span class="text-[10px] header-font text-gray-300 uppercase italic tracking-widest font-black">2023-24</span>
+                        <span class="text-[9px] header-font text-gray-300 italic">2023-24</span>
                     </div>
-                    <div class="p-10 border border-gray-100 hover:border-black transition-all group flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <span class="text-2xl header-font text-gray-100 group-hover:text-red-600 transition-colors italic font-black">02</span>
-                            <div>
-                                <h3 class="text-xl md:text-2xl header-font italic uppercase tracking-wider">Red Dragon Logistics</h3>
-                                <p class="text-[10px] header-font text-gray-400 uppercase italic">Supply Chain // Design</p>
-                            </div>
+                    <div class="p-8 border border-gray-100 flex justify-between items-center bg-white shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <span class="text-2xl header-font text-gray-100 italic font-black">02</span>
+                            <h3 class="text-xl header-font italic uppercase tracking-wider">Red Dragon Logic</h3>
                         </div>
-                        <span class="text-[10px] header-font text-gray-300 uppercase italic tracking-widest font-black">2022-24</span>
-                    </div>
-                    <div class="p-10 border border-gray-100 hover:border-black transition-all group flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <span class="text-2xl header-font text-gray-100 group-hover:text-red-600 transition-colors italic font-black">03</span>
-                            <div>
-                                <h3 class="text-xl md:text-2xl header-font italic uppercase tracking-wider">Cyber Labs HK</h3>
-                                <p class="text-[10px] header-font text-gray-400 uppercase italic">Research & Development</p>
-                            </div>
-                        </div>
-                        <span class="text-[10px] header-font text-gray-300 uppercase italic tracking-widest font-black">2024</span>
-                    </div>
-                    <div class="p-10 border border-gray-100 hover:border-black transition-all group flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <span class="text-2xl header-font text-gray-100 group-hover:text-red-600 transition-colors italic font-black">04</span>
-                            <div>
-                                <h3 class="text-xl md:text-2xl header-font italic uppercase tracking-wider">Minimal Studio</h3>
-                                <p class="text-[10px] header-font text-gray-400 uppercase italic">Architecture // Visuals</p>
-                            </div>
-                        </div>
-                        <span class="text-[10px] header-font text-gray-300 uppercase italic tracking-widest font-black">2021-23</span>
+                        <span class="text-[9px] header-font text-gray-300 italic">2022-24</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CONTACT PAGE -->
-        <section id="contact" class="page-section pt-24 md:pt-32 pb-24 md:pb-32 px-6">
-            <div class="max-w-7xl mx-auto text-center">
-                <div class="mb-16 md:mb-20">
-                    <span class="text-[10px] md:text-xs header-font tracking-[0.3em] text-red-600 block mb-4 uppercase italic">Initialize Node</span>
-                    <h1 class="text-5xl md:text-8xl header-font tracking-tighter mb-6 italic uppercase">Connect.</h1>
-                    <p class="text-gray-500 max-w-lg mx-auto font-medium uppercase italic tracking-widest text-[10px] md:text-xs leading-relaxed">hello@sysmokin.com // West Side Node Protocol Active</p>
-                </div>
-                <div class="max-w-xl mx-auto bg-gray-50 p-8 md:p-12 border border-gray-100 text-left shadow-2xl">
-                    <form class="space-y-12">
-                        <div class="relative">
-                            <label class="text-[10px] header-font text-gray-400 tracking-widest block mb-2 uppercase italic">01. Identity</label>
-                            <input type="text" placeholder="NAME_REQUIRED" class="w-full bg-transparent input-underline py-4 text-xl font-bold placeholder:text-gray-200 uppercase header-font italic">
+        <section id="contact" class="page-section pt-24 pb-24 px-4 md:px-6 text-center">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-5xl md:text-8xl header-font italic uppercase mb-12">Connect.</h1>
+                <div class="max-w-xl mx-auto bg-gray-50 p-8 border border-gray-100 text-left shadow-2xl">
+                    <form class="space-y-8">
+                        <div>
+                            <label class="text-[9px] header-font text-gray-400 tracking-widest block mb-2 uppercase italic">Identity</label>
+                            <input type="text" placeholder="NAME_REQUIRED" class="w-full bg-transparent input-underline py-3 text-lg font-bold uppercase header-font italic">
                         </div>
-                        <div class="relative">
-                            <label class="text-[10px] header-font text-gray-400 tracking-widest block mb-2 uppercase italic">02. Frequency</label>
-                            <input type="email" placeholder="EMAIL_REQUIRED" class="w-full bg-transparent input-underline py-4 text-xl font-bold placeholder:text-gray-200 uppercase header-font italic">
-                        </div>
-                        <button type="button" class="w-full py-6 bg-black text-white text-xs header-font tracking-widest md:tracking-[0.3em] hover:bg-red-600 transition-all flex items-center justify-center gap-4 italic uppercase tap-target shadow-lg">
+                        <button type="button" class="w-full py-5 bg-black text-white text-[10px] header-font tracking-widest hover:bg-red-600 transition-all italic uppercase flex items-center justify-center gap-3">
                             SEND_PROTOCOL <i data-lucide="send" class="w-4 h-4"></i>
                         </button>
                     </form>
@@ -513,65 +362,60 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-100 pt-24 pb-12 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 mb-24">
-            <div class="col-span-1 sm:col-span-2">
-                <h2 class="text-xl md:text-3xl header-font mb-8 italic uppercase">SYSMOKIN 西斯莫金</h2>
-                <p class="text-gray-500 max-w-sm leading-relaxed mb-10 font-medium italic uppercase tracking-wide text-xs">Multimedia Specialist and Fullstack Developer blending logic with minimalist aesthetics.</p>
-                <div class="flex gap-6">
-                    <div class="w-12 h-12 border border-gray-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-sm tap-target"><i data-lucide="github"></i></div>
-                    <div class="w-12 h-12 border border-gray-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-sm tap-target"><i data-lucide="twitter"></i></div>
-                </div>
+    <footer class="bg-gray-50 border-t border-gray-100 pt-16 pb-8 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+            <div class="col-span-1 md:col-span-2">
+                <h2 class="text-xl header-font mb-4 italic uppercase">SYSMOKIN 西斯莫金</h2>
+                <p class="text-gray-500 max-w-sm font-medium italic uppercase tracking-wide text-[10px]">Multimedia Specialist and Fullstack Developer.</p>
             </div>
-            <div>
-                <h3 class="header-font text-xs tracking-widest mb-8 text-red-600 uppercase italic">Navigation</h3>
-                <ul class="space-y-6 text-xs font-bold uppercase header-font italic">
-                    <li onclick="showPage('home')" class="cursor-pointer hover:text-red-600 tap-target">Home</li>
-                    <li onclick="showPage('about')" class="cursor-pointer hover:text-red-600 tap-target">About</li>
-                    <li onclick="showPage('works')" class="cursor-pointer hover:text-red-600 tap-target">Works</li>
+            <!-- Tightened Footer Spacing -->
+            <div class="space-y-4">
+                <h3 class="header-font text-[10px] text-red-600 uppercase italic">Navigation</h3>
+                <ul class="text-[11px] font-bold uppercase header-font italic space-y-2">
+                    <li onclick="showPage('home')" class="cursor-pointer hover:text-red-600">Home</li>
+                    <li onclick="showPage('about')" class="cursor-pointer hover:text-red-600">About</li>
+                    <li onclick="showPage('works')" class="cursor-pointer hover:text-red-600">Works</li>
                 </ul>
             </div>
-            <div>
-                <h3 class="header-font text-xs tracking-widest mb-8 text-red-600 uppercase italic">Legal</h3>
-                <ul class="space-y-6 text-xs font-bold uppercase header-font italic">
-                    <li onclick="showPage('terms')" class="cursor-pointer hover:text-red-600 tap-target">Terms</li>
-                    <li onclick="showPage('privacy')" class="cursor-pointer hover:text-red-600 tap-target">Privacy</li>
+            <div class="space-y-4">
+                <h3 class="header-font text-[10px] text-red-600 uppercase italic">Legal</h3>
+                <ul class="text-[11px] font-bold uppercase header-font italic space-y-2">
+                    <li onclick="showPage('terms')" class="cursor-pointer hover:text-red-600">Terms</li>
+                    <li onclick="showPage('privacy')" class="cursor-pointer hover:text-red-600">Privacy</li>
                 </ul>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto text-[10px] header-font text-gray-400 tracking-widest flex flex-col sm:flex-row justify-between gap-6 uppercase italic text-center sm:text-left">
+        <div class="max-w-7xl mx-auto text-[8px] header-font text-gray-400 tracking-widest flex flex-col sm:flex-row justify-between gap-4 uppercase italic border-t border-gray-100 pt-8">
             <span>© 2024 SYSMOKIN MODULE.</span>
-            <span class="sm:text-right uppercase">Designed on the Grid // 西斯莫金档案</span>
+            <span>DESIGNED ON THE GRID // 西斯莫金</span>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
 
+        // Project Data
         const projectLibrary = {
             'p1': {
                 title: 'NEO-SEOUL IDENTITY',
                 category: 'DESIGN // BRANDING',
-                year: 'DEPLOY_2024',
-                desc: 'A full multimedia rebranding protocol focusing on high-contrast visuals, minimalist typography, and scalable vector architectures.',
+                desc: 'Multimedia rebranding protocol focused on high-contrast logic and vector architectures.',
                 img: 'https://images.unsplash.com/photo-1550745679-33dbe58787a2?auto=format&fit=crop&q=80&w=800',
-                stack: ['Photoshop', 'Illustrator', 'Motion Logic']
+                stack: ['Photoshop', 'Illustrator']
             },
             'p2': {
                 title: 'ZENITH DASHBOARD',
                 category: 'FULLSTACK // LOGIC',
-                year: 'DEPLOY_2023',
-                desc: 'High-performance SaaS protocol built with React and Node.js. Focused on real-time synthesis and zero-trust logic.',
+                desc: 'Real-time synthesis dashboard protocol built for high-velocity performance.',
                 img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800',
-                stack: ['React', 'Next.js', 'PostgreSQL']
+                stack: ['React', 'PostgreSQL']
             },
             'p3': {
                 title: 'KAIZEN AUDIO',
                 category: 'AUDIO // PRODUCTION',
-                year: 'DEPLOY_2024',
-                desc: 'Custom audio synthesis protocol for digital content. Modules for mastering and beat production.',
+                desc: 'Custom audio synthesis protocol for digital nodes and creative content creators.',
                 img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800',
-                stack: ['Mastering', 'Beat Synth', 'Logic Pro']
+                stack: ['Logic Pro', 'Mastering']
             }
         };
 
@@ -580,15 +424,15 @@
             if (!project) return;
             document.getElementById('modalTitle').innerText = project.title;
             document.getElementById('modalCategory').innerText = project.category;
-            document.getElementById('modalYear').innerText = project.year;
             document.getElementById('modalDesc').innerText = project.desc;
             document.getElementById('modalImg').src = project.img;
             const stackList = document.getElementById('modalStack');
             stackList.innerHTML = '';
             project.stack.forEach(item => {
-                const li = document.createElement('li');
-                li.innerText = `// ${item}`;
-                stackList.appendChild(li);
+                const span = document.createElement('span');
+                span.className = 'text-[9px] bg-gray-50 px-2 py-1 border font-bold uppercase italic text-gray-400';
+                span.innerText = `// ${item}`;
+                stackList.appendChild(span);
             });
             document.getElementById('projectModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -611,8 +455,6 @@
         document.getElementById('menuToggle').addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         });
-
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProject(); });
     </script>
 </body>
 </html>
